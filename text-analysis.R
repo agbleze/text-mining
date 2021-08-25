@@ -67,3 +67,8 @@ comments_tidy %>%
   mutate(sentiment = positive - negative) -> comments_sentiment
 
 ggplot(comments_sentiment, aes(x = sentiment)) + geom_histogram()
+
+##### wordcloud  ###
+comments_tidy %>%
+  count(word) %>%
+  with(wordcloud(word, n))
