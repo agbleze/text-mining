@@ -57,3 +57,13 @@ corpus %>%
 comments %>%
   unnest_tokens(word, text) -> comments_tidy
 
+############   sentiment analysis  ##############
+get_sentiments("bing")
+
+comments_tidy %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(company, sentiment)%>%
+  spread(sentiment, n, fill = 0)%>%
+  mutate(sentiment = positive - negative) -> comments_sentiment
+
+ggplot(comments_sentiment, aes(x = sentiment)) + geom_histogram()
