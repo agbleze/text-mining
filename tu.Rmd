@@ -1,0 +1,50 @@
+---
+title: "tutorial"
+author: "Linus"
+date: "8/26/2021"
+output: html_document
+runtime: shiny
+---
+```{r setup, echo=FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+library(tidyr)
+library(igraph)
+library(ggraph)
+library(wordcloud)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+load("data/corpus.rdata")
+
+corpus %>%
+  filter(grepl(("date of foundation+"),
+               text) |grepl(("industry+"),
+               text) |grepl(("share holders+"),
+               text)) -> information
+
+corpus %>%
+  filter(!grepl(c("date of foundation"), text))%>%
+  filter(!grepl(c("industry"), text)) %>%
+  filter(!grepl(c("share holders"), text)) -> comments
+```
+The above code cleans data for text mining 
+
+```{r}
+comments %>%
+  unnest_tokens(trigram, text, token = "ngrams", n = 3) -> trigram_comments
+
+trigram_comments %>%
+  separate(trigram, c("word1", "word2", "word3"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  filter(!word3 %in% stop_words$word) %>%
+  count(word1, word2, word3, sort = TRUE) %>%
+  table()
+```
+
+The number of companies analyzed is `r corpus$company %>% unique() %>% length()`
+
+and now `r corpus %>% unnest_tokens(word, text, token = "words") %>% select(word) %>% nchar() %>% as.numeric()`
