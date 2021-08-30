@@ -23,3 +23,12 @@ fake.text <- 'R text mining is good but text mining in python is also'
 sub('text mining', 'tm', fake.text, ignore.case = F)
 gsub('text mining', 'tm', fake.text, ignore.case = F)
 gsub('&amp', '', text.df[5, 5])
+
+### using mgsub()
+patterns <- c("good", "also", "text mining")
+replacements <- c("great", "just as suitable", "tm")
+mgsub(patterns, replacements, fake.text)
+stri_count(text.df$text, fixed="http")
+
+pattern <- with(text.df, str_detect(text.df$text, "http") & str_detect(text.df$text, "DM"))
+text.df[pattern, 5]
