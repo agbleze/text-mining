@@ -91,3 +91,9 @@ associations <- findAssocs(tdm, 'apologies', 0.11)
 associations <- as.data.frame(associations)
 associations$terms <- row.names(associations)
 associations$terms <- factor(associations$terms, levels = associations$terms)
+                      
+ggplot(associations, aes(y = terms)) + geom_point(aes(x = apologies), data = associations, size = 5) +
+  theme_gdocs() + geom_text(aes(x = apologies, label = apologies), colour = "darkred", hjust = -.25, size = 8) +
+  theme(text = element_text(size = 20), axis.title.y = element_blank())
+
+                      
