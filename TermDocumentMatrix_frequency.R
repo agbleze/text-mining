@@ -86,3 +86,8 @@ freq.df$word <- factor(freq.df$word, levels = unique(as.character(freq.df$word))
 ggplot(freq.df[1:20, ], aes(x = word, y = frequency)) + geom_bar(stat = "identity", fill = "darkred") +
   coord_flip() + theme_gdocs() + geom_text(aes(label = frequency), colour = "white", hjust = 1.25, size = 5.0)
 
+##### word association
+associations <- findAssocs(tdm, 'apologies', 0.11)
+associations <- as.data.frame(associations)
+associations$terms <- row.names(associations)
+associations$terms <- factor(associations$terms, levels = associations$terms)
