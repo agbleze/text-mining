@@ -77,3 +77,12 @@ term.freq <- rowSums(tdm.tweets.m)
 freq.df <- data.frame(word = names(term.freq), frequency = term.freq)
 freq.df <- freq.df[order(freq.df[,2], decreasing = T),]
 freq.df[1:10,]
+                      
+                      
+                      
+                      
+ ## convert to factor so bar graph plotted can be sorted
+freq.df$word <- factor(freq.df$word, levels = unique(as.character(freq.df$word)))
+ggplot(freq.df[1:20, ], aes(x = word, y = frequency)) + geom_bar(stat = "identity", fill = "darkred") +
+  coord_flip() + theme_gdocs() + geom_text(aes(label = frequency), colour = "white", hjust = 1.25, size = 5.0)
+
