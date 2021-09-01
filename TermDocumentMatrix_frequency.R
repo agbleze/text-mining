@@ -97,3 +97,10 @@ ggplot(associations, aes(y = terms)) + geom_point(aes(x = apologies), data = ass
   theme(text = element_text(size = 20), axis.title.y = element_blank())
 
                       
+### processing for word network
+refund <- tweets[grep("refund", tweets$text, ignore.case = T),]
+# refund.reader <- readTabular(mapping = list(content = "text", id = "ID"))
+#refund.read <- DataframeSource(refund)
+refund.corpus <- VCorpus(DataframeSource(refund[1:3, ]), readerControl = list(reader = refund.read))
+refund.corpus <- clean.corpus(refund.corpus)
+refund.tdm <- TermDocumentMatrix(refund.corpus, control=list(weighting = weightTf))                         
